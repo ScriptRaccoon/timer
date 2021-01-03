@@ -1,16 +1,18 @@
 class Timer {
-    constructor(deltaTime) {
+    constructor(deltaTime = 1 / 60) {
         let accumulatedTime = 0;
-        let lastTime = 0;
+        let lastTime = null;
 
         this.loop = (currentTime) => {
-            accumulatedTime += (currentTime - lastTime) / 1000;
-            if (accumulatedTime > 1) {
-                accumulatedTime = 1;
-            }
-            while (accumulatedTime > deltaTime) {
-                this.update(deltaTime);
-                accumulatedTime -= deltaTime;
+            if (lastTime) {
+                accumulatedTime += (currentTime - lastTime) / 1000;
+                if (accumulatedTime > 1) {
+                    accumulatedTime = 1;
+                }
+                while (accumulatedTime > deltaTime) {
+                    this.update(deltaTime);
+                    accumulatedTime -= deltaTime;
+                }
             }
 
             lastTime = currentTime;
@@ -24,7 +26,7 @@ class Timer {
     }
 }
 
-const timer = new Timer(1 / 60);
+const timer = new Timer();
 
 timer.update = (deltaTime) => {
     // do some stuff
